@@ -32,9 +32,9 @@ const LoginPage = () => {
     };
 
     return (
-        <div className="min-h-screen bg-[#0c0c14] flex items-center justify-center p-4">
-            <div className="w-full max-w-md glass p-10 rounded-[2.5rem] border border-white/10 shadow-2xl relative overflow-hidden">
-                <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
+        <div className="min-h-screen bg-[var(--bg-color)] flex items-center justify-center p-4 transition-colors duration-300">
+            <div className="w-full max-w-md glass p-10 rounded-[2.5rem] border border-[var(--glass-border)] shadow-2xl relative overflow-hidden">
+                <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none text-[var(--text-color)]">
                     <Truck size={200} />
                 </div>
                 
@@ -43,7 +43,7 @@ const LoginPage = () => {
                         <Truck size={40} className="text-white" />
                     </div>
                     <h1 className="text-4xl font-black gradient-text tracking-tight mb-2">FleetSight</h1>
-                    <p className="text-gray-400 font-medium tracking-wide uppercase text-xs">AI-Native Fleet Intelligence</p>
+                    <p className="text-[var(--text-muted)] font-medium tracking-wide uppercase text-xs">AI-Native Fleet Intelligence</p>
                 </div>
 
                 {error && (
@@ -62,7 +62,7 @@ const LoginPage = () => {
                             placeholder="Email Address"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            className="w-full bg-white/5 border border-white/10 rounded-2xl py-4.5 pl-14 pr-5 focus:outline-none focus:border-primary-500 focus:bg-white/[0.08] transition-all text-white placeholder-gray-500 font-medium"
+                            className="w-full bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-2xl py-4.5 pl-14 pr-5 focus:outline-none focus:border-primary-500 transition-all text-[var(--text-color)] placeholder:text-[var(--text-muted)] font-medium"
                         />
                     </div>
 
@@ -74,7 +74,7 @@ const LoginPage = () => {
                             placeholder="Password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="w-full bg-white/5 border border-white/10 rounded-2xl py-4.5 pl-14 pr-5 focus:outline-none focus:border-primary-500 focus:bg-white/[0.08] transition-all text-white placeholder-gray-500 font-medium"
+                            className="w-full bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-2xl py-4.5 pl-14 pr-5 focus:outline-none focus:border-primary-500 transition-all text-[var(--text-color)] placeholder:text-[var(--text-muted)] font-medium"
                         />
                     </div>
 
@@ -100,16 +100,16 @@ const LoginPage = () => {
                     </button>
                 </form>
 
-                <div className="mt-8 pt-6 border-t border-white/5 text-center space-y-4">
+                <div className="mt-8 pt-6 border-t border-[var(--glass-border)] text-center space-y-4">
                     <div className="flex items-center gap-3 opacity-60 hover:opacity-100 transition-opacity">
-                        <div className="h-px bg-white/10 flex-1" />
-                        <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Demo Access</span>
-                        <div className="h-px bg-white/10 flex-1" />
+                        <div className="h-px bg-[var(--glass-border)] flex-1" />
+                        <span className="text-[10px] text-[var(--text-muted)] font-bold uppercase tracking-widest">Demo Access</span>
+                        <div className="h-px bg-[var(--glass-border)] flex-1" />
                     </div>
                     
                     <button 
                         onClick={handleDemoLogin}
-                        className="w-full bg-white/5 hover:bg-white/10 border border-white/10 py-3 rounded-xl text-gray-300 text-xs font-bold transition-all"
+                        className="w-full bg-[var(--glass-bg)] hover:bg-[var(--glass-bg)] border border-[var(--glass-border)] py-3 rounded-xl text-[var(--text-color)] text-xs font-bold transition-all hover:border-[var(--card-hover-border)]"
                     >
                         Use Demo Credentials
                     </button>

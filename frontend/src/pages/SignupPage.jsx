@@ -38,14 +38,14 @@ const SignupPage = () => {
     };
 
     return (
-        <div className="min-h-screen bg-[#0c0c14] flex items-center justify-center p-4">
-            <div className="w-full max-w-lg glass p-10 rounded-[2.5rem] border border-white/10 shadow-2xl relative overflow-hidden">
+        <div className="min-h-screen bg-[var(--bg-color)] flex items-center justify-center p-4 transition-colors duration-300">
+            <div className="w-full max-w-lg glass p-10 rounded-[2.5rem] border border-[var(--glass-border)] shadow-2xl relative overflow-hidden">
                 <div className="text-center mb-10 relative">
                     <div className="w-16 h-16 bg-primary-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
                         <UserPlus size={32} className="text-white" />
                     </div>
                     <h1 className="text-3xl font-black gradient-text tracking-tight">Access Registration</h1>
-                    <p className="text-gray-400 mt-2">Request access to the FleetSight Command Center</p>
+                    <p className="text-[var(--text-muted)] mt-2">Request access to the FleetSight Command Center</p>
                 </div>
 
                 {error && (
@@ -72,7 +72,7 @@ const SignupPage = () => {
                             <select 
                                 value={role}
                                 onChange={(e) => setRole(e.target.value)}
-                                className="w-full bg-[#12121e] border border-white/10 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-primary-500 transition-all appearance-none font-medium text-white"
+                                className="w-full bg-[var(--sidebar-bg)] border border-[var(--glass-border)] rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-primary-500 transition-all appearance-none font-medium text-[var(--text-color)]"
                             >
                                 {roles.map(r => <option key={r} value={r}>{r}</option>)}
                             </select>
@@ -87,7 +87,7 @@ const SignupPage = () => {
                             placeholder="Corporate Email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-primary-500 transition-all font-medium"
+                            className="w-full bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-primary-500 transition-all font-medium text-[var(--text-color)] placeholder:text-[var(--text-muted)]"
                         />
                     </div>
 
@@ -99,11 +99,11 @@ const SignupPage = () => {
                             placeholder="Secure Password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-primary-500 transition-all font-medium"
+                            className="w-full bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-primary-500 transition-all font-medium text-[var(--text-color)] placeholder:text-[var(--text-muted)]"
                         />
                     </div>
 
-                    <p className="text-[10px] text-gray-500 px-2 italic">
+                    <p className="text-[10px] text-[var(--text-muted)] px-2 italic">
                         * Access requests are audited. Unauthorized entry attempts are logged.
                     </p>
 
@@ -116,7 +116,7 @@ const SignupPage = () => {
                 </form>
 
                 <div className="mt-8 text-center">
-                    <Link to="/login" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">
+                    <Link to="/login" className="text-[var(--text-muted)] hover:text-[var(--text-color)] transition-colors text-sm font-medium">
                         Already have access? <span className="text-primary-400 font-bold underline underline-offset-4">Sign In</span>
                     </Link>
                 </div>
