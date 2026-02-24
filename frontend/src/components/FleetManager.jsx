@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { supabase } from '../supabaseClient';
+import api from '../api';
 import { Truck, Search, Plus, Filter, User } from 'lucide-react';
 
 const FleetManager = () => {
@@ -8,9 +8,14 @@ const FleetManager = () => {
 
   useEffect(() => {
     const fetchVehicles = async () => {
-      const { data, error } = await supabase.from('vehicles').select('*, drivers(*)');
-      if (data) setVehicles(data);
-      setLoading(false);
+      try {
+        const { data } = await api.get('/fleet');
+        setVehicles(data);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
     };
     fetchVehicles();
   }, []);
@@ -36,9 +41,6 @@ const FleetManager = () => {
           />
         </div>
         <div className="flex gap-3">
-          <button className="flex items-center gap-2 bg-white/5 hover:bg-white/10 px-4 py-2.5 rounded-xl border border-white/10 transition-all">
-            <Filter size={18} /> Filter
-          </button>
           <button className="flex items-center gap-2 bg-primary-600 hover:bg-primary-700 px-6 py-2.5 rounded-xl text-white font-bold transition-all shadow-lg shadow-primary-600/20">
             <Plus size={18} /> Add Vehicle
           </button>
@@ -58,51 +60,43 @@ const FleetManager = () => {
           </thead>
           <tbody className="divide-y divide-white/5">
             {loading ? (
-               [1,2,3].map(i => (
-                 <tr key={i} className="animate-pulse">
-                   <td colSpan="5" className="h-16 px-6"></td>
-                 </tr>
-               ))
+               [1,2,3].map(i => <tr key={i} className="animate-pulse"><td colSpan="5" className="h-16 px-6 bg-white/5"></td></tr>)
             ) : vehicles.length === 0 ? (
-              [
-                { vin: 'V-LNX-9921', type: 'Heavy Truck', capacity: '12 Tons', status: 'Active', driver: 'John Doe' },
-                { vin: 'V-LNX-4410', type: 'Delivery Van', capacity: '2 Tons', status: 'Idle', driver: 'Jane Smith' },
-                { vin: 'V-LNX-3301', type: 'Refrigerated', capacity: '5 Tons', status: 'Under Maintenance', driver: 'None' },
-              ].map((v, i) => (
-                <tr key={i} className="hover:bg-white/[0.02] transition-colors">
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center">
-                        <Truck size={20} className="text-gray-400" />
-                      </div>
-                      <div>
-                        <p className="font-bold">{v.vin}</p>
-                        <p className="text-xs text-gray-400">{v.type}</p>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-2">
-                       <div className="w-8 h-8 bg-primary-500/20 rounded-full flex items-center justify-center">
-                         <User size={14} className="text-primary-400" />
-                       </div>
-                       <span className="font-medium">{v.driver}</span>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 font-mono text-gray-300">{v.capacity}</td>
-                  <td className="px-6 py-4">
-                    <span className={`px-3 py-1 rounded-full text-xs font-bold border ${getStatusColor(v.status)}`}>
-                      {v.status}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    <button className="text-primary-400 hover:text-primary-300 font-medium text-sm">View Details</button>
-                  </td>
+                <tr>
+                    <td colSpan="5" className="px-6 py-12 text-center text-gray-500 font-medium">
+                        No vehicles found. Add your first asset to start tracking.
+                    </td>
                 </tr>
-              ))
             ) : vehicles.map((v, i) => (
               <tr key={i} className="hover:bg-white/[0.02] transition-colors">
-                {/* ... similar mapping for real data ... */}
+                <td className="px-6 py-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center">
+                      <Truck size={20} className="text-gray-400" />
+                    </div>
+                    <div>
+                      <p className="font-bold">{v.vin}</p>
+                      <p className="text-xs text-gray-400">{v.type}</p>
+                    </div>
+                  </div>
+                </td>
+                <td className="px-6 py-4">
+                  <div className="flex items-center gap-2">
+                     <div className="w-8 h-8 bg-primary-500/20 rounded-full flex items-center justify-center text-primary-400 font-bold text-[10px]">
+                        {v.drivers?.name?.charAt(0) || <User size={12}/>}
+                     </div>
+                     <span className="font-medium">{v.drivers?.name || 'Unassigned'}</span>
+                  </div>
+                </td>
+                <td className="px-6 py-4 font-mono text-gray-300">{v.capacity}</td>
+                <td className="px-6 py-4">
+                  <span className={`px-3 py-1 rounded-full text-xs font-bold border ${getStatusColor(v.status)}`}>
+                    {v.status}
+                  </span>
+                </td>
+                <td className="px-6 py-4 text-right">
+                  <button className="text-primary-400 hover:text-primary-300 font-medium text-sm">Manage</button>
+                </td>
               </tr>
             ))}
           </tbody>

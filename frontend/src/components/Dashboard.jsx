@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { supabase } from '../supabaseClient';
+import api from '../api';
 import { Truck, Package, Clock, AlertTriangle, TrendingUp } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
@@ -21,16 +21,17 @@ const Dashboard = () => {
 
   useEffect(() => {
     const fetchStats = async () => {
-      // Mock stats for demo if database is empty
-      const { data: vData } = await supabase.from('vehicles').select('*');
-      const { data: dData } = await supabase.from('deliveries').select('*');
-      
-      setStats({
-        activeDeliveries: dData?.filter(d => d.status === 'In Transit').length || 12,
-        idleVehicles: vData?.filter(v => v.status === 'Idle').length || 5,
-        delayedShipments: dData?.filter(d => d.status === 'Delayed').length || 2,
-        completionRate: 92
-      });
+      try {
+        const { data } = await api.get('/dashboard/stats');
+        setStats(prev => ({
+          ...prev,
+          activeDeliveries: data.activeDeliveries,
+          idleVehicles: data.idleVehicles,
+          delayedShipments: data.delayedShipments,
+        }));
+      } catch (err) {
+        console.error("Failed to fetch dashboard stats", err);
+      }
     };
     fetchStats();
   }, []);
@@ -44,7 +45,6 @@ const Dashboard = () => {
 
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
-      {/* KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {cards.map((card, i) => (
           <div key={i} className="glass p-6 rounded-3xl border border-white/5 hover:border-white/20 transition-all group">
@@ -63,7 +63,6 @@ const Dashboard = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Chart */}
         <div className="lg:col-span-2 glass p-8 rounded-3xl border border-white/5">
           <div className="flex justify-between items-center mb-8">
             <h3 className="text-xl font-bold">Delivery Performance</h3>
@@ -92,7 +91,6 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* AI Alerts Panel */}
         <div className="glass p-8 rounded-3xl border border-white/5">
           <h3 className="text-xl font-bold mb-6">AI Risk Alerts</h3>
           <div className="space-y-4">
@@ -102,23 +100,10 @@ const Dashboard = () => {
                 <span className="font-bold text-red-100">Delay Prediction</span>
               </div>
               <p className="text-sm text-red-200/70">
-                Vehicle #V422 (Route A-12) has a <span className="text-red-400 font-bold">82% probability</span> of delay due to traffic at Sector 4.
+                Vehicle #V422 (Route A-12) has a <span className="text-red-400 font-bold">82% probability</span> of delay.
               </p>
               <button className="mt-3 text-xs bg-red-500 text-white px-3 py-1.5 rounded-lg hover:bg-red-600 transition-colors">
                 Re-route Now
-              </button>
-            </div>
-
-            <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/20">
-              <div className="flex items-center gap-3 mb-2">
-                <Truck className="text-amber-500" size={18} />
-                <span className="font-bold text-amber-100">Idle Detection</span>
-              </div>
-              <p className="text-sm text-amber-200/70">
-                Vehicle #V109 idle for 45 mins. Recommend assigning Delivery #342 (3km away).
-              </p>
-              <button className="mt-3 text-xs bg-amber-500 text-white px-3 py-1.5 rounded-lg hover:bg-amber-600 transition-colors">
-                Assign Order
               </button>
             </div>
           </div>
