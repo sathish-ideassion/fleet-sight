@@ -78,7 +78,10 @@ const LoginPage = () => {
                         />
                     </div>
 
-                    <div className="flex justify-end">
+                    <div className="flex justify-between items-center px-1">
+                        <Link to="/signup" className="text-xs text-primary-400 hover:text-primary-300 font-bold">
+                            Create Account
+                        </Link>
                         <Link to="/forgot-password" size="sm" className="text-xs text-gray-500 hover:text-primary-400 transition-colors">
                             Forgot Password?
                         </Link>
@@ -97,17 +100,10 @@ const LoginPage = () => {
                     </button>
                 </form>
 
-                <div className="mt-8 pt-8 border-t border-white/5 text-center space-y-4">
-                    <p className="text-gray-400 text-sm">
-                        New coordinator?{' '}
-                        <Link to="/signup" className="text-primary-400 hover:text-primary-300 font-bold underline underline-offset-4">
-                            Register now
-                        </Link>
-                    </p>
-                    
-                    <div className="flex items-center gap-3 mt-6 opacity-60 hover:opacity-100 transition-opacity">
+                <div className="mt-8 pt-6 border-t border-white/5 text-center space-y-4">
+                    <div className="flex items-center gap-3 opacity-60 hover:opacity-100 transition-opacity">
                         <div className="h-px bg-white/10 flex-1" />
-                        <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Or Demo</span>
+                        <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Demo Access</span>
                         <div className="h-px bg-white/10 flex-1" />
                     </div>
                     
