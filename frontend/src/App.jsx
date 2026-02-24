@@ -31,7 +31,6 @@ function App() {
             }
           >
             {/* Dashboard Nested Routes */}
-            <index element={<Dashboard />} />
             <Route index element={<Dashboard />} />
             <Route path="fleet" element={<FleetManager />} />
             <Route path="deliveries" element={<DeliveryManager />} />
